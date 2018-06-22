@@ -1,0 +1,50 @@
+{
+  "name": "top_weatherapp",
+  "version": "1.0.0",
+  "description": "A weather app created for a TOP project.",
+  "main": "script.jsx",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/18alantom/top_weatherApp.git"
+  },
+  "keywords": [
+    "weather",
+    "theOdinProject"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "start": "webpack-dev-server --open"
+  },
+  "dependencies": {
+    "prop-types": "^15.6.1",
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "css-loader": "^0.28.11",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb": "^17.0.0",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.9.1",
+    "file-loader": "^1.1.11",
+    "html-webpack-plugin": "^3.2.0",
+    "node-sass": "^4.9.0",
+    "sass-loader": "^7.0.3",
+    "style-loader": "^0.21.0",
+    "webpack": "^4.10.2",
+    "webpack-cli": "^2.1.4",
+    "webpack-dev-server": "^3.1.4"
+  },
+  "author": "18alan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/18alantom/top_weatherApp/issues"
+  },
+  "homepage": "https://github.com/18alantom/top_weatherApp#readme"
+}
