@@ -1,0 +1,163 @@
+$translateCenterX: translateX(-50%);
+$bs-light: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+$font-detail: 1rem;
+$font-fam:'Roboto',
+sans-serif;
+$span-color:rgb(0, 100, 117);
+$detail-color:rgb(0, 64, 75);
+$card-background: rgba(255, 136, 0, 0.671);
+$input-background: rgba(255, 136, 0, 0.329);
+$button-text: rgb(0, 85, 100);
+$button-hover: rgb(0, 126, 148);
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: rgba(204, 248, 204, 0);
+}
+
+button {
+  cursor: pointer;
+}
+
+.root {
+  position: absolute;
+  width: 100%;
+  min-height: 100%;
+  background: rgba(6, 218, 255, 0.397);
+}
+
+.outerDiv {
+  color: $detail-color;
+  position: absolute;
+  width: 50%;
+  min-width: 350px;
+  max-width: 450px;
+  background: $card-background;
+  top: 20%;
+  left: 50%;
+  transform: $translateCenterX;
+  box-shadow: $bs-light;
+  border-radius: 4px;
+  h4 {
+    font-family: $font-fam;
+    font-weight: 300;
+    padding: 0px;
+    text-align: center;
+    margin: 0px;
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+    color: rgba(0, 68, 82, 0.637);
+  }
+}
+
+#theTitle {
+  margin: 0px;
+  padding: 8px;
+  font-size: 1.5rem;
+  text-align: center;
+  font-family: 'Roboto Slab', serif;
+  color:rgb(255, 199, 136);
+  background: rgba(0, 192, 226, 0.863);
+  font-weight: 100;
+  border-radius: 4px 4px 0px 0px;
+}
+
+.inputDiv {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr;
+  margin: 8px;
+  padding: 8px;
+  input {
+    border-radius: 2px;
+    color:$font-detail;
+    font-weight: 300;
+    font-size: 0.9rem;
+    border: none;
+    width: 80%;
+    margin-left: 8px;
+    padding: 4px;
+    outline: none;
+    background: transparent;
+  }
+  #countryCode {
+    position: relative;
+    left: -5%;
+  }
+  input:focus {
+    color: $font-detail;
+    background: $input-background;
+  }
+  button {
+    font-weight: 300;
+    text-align: center;
+    background: transparent;
+    border: none;
+    font-size: 0.9rem;
+    margin-right: 8px;
+    color: $button-text;
+    transition-duration: 300ms;
+    outline: none;
+  }
+  button:hover {
+    color: $button-hover;
+  }
+}
+
+.showDiv {
+  margin: 0px;
+  width: 100%;
+  display: grid;
+  font-family: $font-fam;
+  font-size: $font-detail;
+  font-weight: 400;
+  button {
+    color: $detail-color;
+    margin: 8px;
+    padding: 4px;
+    border: none;
+    font-family: $font-fam;
+    background: none;
+    font-size: $font-detail;
+    font-weight: 400;
+    outline: none;
+  }
+  text-align: center;
+  span {
+    color: $span-color;
+    font-size: 0.9rem;
+    font-weight: 300;
+  }
+  #desc {
+    text-transform: capitalize;
+    font-size: 1.3rem;
+  }
+  p {
+    margin: 8px;
+    padding: 4px;
+  }
+}
+
+footer {
+  font-family: $font-fam;
+  font-weight: 300;
+  font-size: 0.8rem;
+  width: 100%;
+  top:100%;
+  padding: 8px;
+  transform: translateY(-100%);
+  position: absolute;
+  text-align: center;
+  color: rgba(14, 37, 37, 0.315);
+  a {
+    text-decoration: none;
+    transition-duration: 300ms;
+  }
+  a:visited{
+    color: rgba(14, 37, 37, 0.315);
+  }
+  a:hover{
+    color: rgb(14, 37, 37);
+  }
+}

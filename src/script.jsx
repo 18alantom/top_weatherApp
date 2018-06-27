@@ -21,6 +21,37 @@ function getCoordinates() {
   return p;
 }
 
+const unixToStandardTime = (t) => {
+  const d = new Date(t * 1000);
+  return `${d.getHours()}:${d.getMinutes()}`;
+};
+
+const roundToTwo = v => Math.round(v * 100) / 100;
+
+const kelvinToCelcius = (t) => {
+  let temp = t;
+  temp -= 273;
+  return roundToTwo(temp);
+};
+
+const tempSwitcher = (e) => {
+  let temp = e.target.innerText;
+  const rex = /(\d+\.\d+)(.+)/g;
+  const array = rex.exec(temp);
+  let t = array[1];
+  const u = array[2];
+  if (u === '°C') {
+    t = t * (9 / 5) + 32;
+    temp = `${roundToTwo(t)}°F`;
+  }
+  if (u === '°F') {
+    t = (t - 32) * (5 / 9);
+    temp = `${roundToTwo(t)}°C`;
+  }
+  e.target.innerText = `${temp}`;
+  // e.target.innerText = `Temperature: ${temp}`;
+};
+
 class WeatherContainer extends React.Component {
   constructor(props) {
     super(props);
@@ -65,16 +96,14 @@ class WeatherContainer extends React.Component {
   }
 
   onClick() {
-    console.log('inonclick', this.state);
     this.getWeather(null, null);
   }
 
   setWeather(w) {
-    console.log(w);
     let { cod } = w;
     cod = Number(cod);
     if (cod === 200) {
-      this.setState({ weatherData: w, statusMessage: 'Weather:' });
+      this.setState({ weatherData: w, statusMessage: 'The current weather conditions are ' });
     } else if (w.message) {
       this.setState({ statusMessage: w.message });
     }
@@ -82,7 +111,6 @@ class WeatherContainer extends React.Component {
 
   getWeather(longitude, latitude) {
     let API_CALL;
-    console.log('ingetw', this.state);
     const { zip, country } = this.state;
     if (longitude && latitude) {
       API_CALL = `http://api.openweathermap.org/data/2.5/weather?appid=${API_KEY}&lat=${longitude}&lon=${latitude}`;
@@ -92,7 +120,7 @@ class WeatherContainer extends React.Component {
     fetch(API_CALL, { method: 'get', mode: 'cors' })
       .then(w => w.json())
       .then(this.setWeather)
-      .catch(e => console.log(e));
+      .catch(e => console.error(e));
   }
 
   permissionDenied() {
@@ -107,6 +135,7 @@ class WeatherContainer extends React.Component {
         statusMessage={statusMessage}
         onChange={this.onChange}
         onClick={this.onClick}
+        showMore={this.showMore}
       />
     );
   }
@@ -122,20 +151,21 @@ function Weather(props) {
       const {
         weather, main, name: area, sys,
       } = data;
-      const { temp, pressure, humidity } = main;
+      const temp = main.temp ? `${kelvinToCelcius(main.temp)}°C` : 'n/a';
+      const { pressure, humidity } = main;
       const { main: wMain, description } = weather[0];
       const { sunrise, sunset, country } = sys;
-      const location = area === '' ? '' : `${area}, ${country}`;
+      const location = area === '' ? 'n/a' : `${area}, ${country}`;
       return (
         <ShowData
           location={location}
           temp={temp}
-          pressure={pressure}
-          humidity={humidity}
-          wMain={wMain}
-          description={description}
-          sunrise={sunrise}
-          sunset={sunset}
+          pressure={String(pressure || 'n/a')}
+          humidity={String(humidity || 'n/a')}
+          wMain={wMain || 'n/a'}
+          description={description || 'n/a'}
+          sunrise={sunrise ? unixToStandardTime(sunrise) : ''}
+          sunset={sunset ? unixToStandardTime(sunset) : ''}
         />
       );
     }
@@ -143,55 +173,68 @@ function Weather(props) {
   }
   return (
     <div className="outerDiv">
-      <div className="statusDiv">
-        <p>
-          <br />
-          {statusMessage}
-        </p>
-      </div>
-      {renderData()}
+      <h1 id="theTitle">
+Weather
+      </h1>
       <div className="inputDiv">
-        <input type="number" id="zipCode" onChange={onChange} />
-        <input type="text" id="countryCode" onChange={onChange} />
+        <input type="number" id="zipCode" onChange={onChange} placeholder="Zip code" />
+        <input type="text" id="countryCode" onChange={onChange} placeholder="Country code" />
         <button onClick={onClick} type="button">
-          OK
+          Submit
         </button>
       </div>
+      <h4>
+        <br />
+        {statusMessage}
+      </h4>
+      {renderData()}
     </div>
   );
 }
+
 function ShowData(props) {
   const {
-    location, temp, pressure, humidity, wMain, description, sunrise, sunset,
+    location, temp, pressure, humidity, description, sunrise, sunset,
   } = props;
   return (
     <div className="showDivOuter">
-      <div className="showDivLess">
+      <div className="showDiv">
         <p>
           {location}
         </p>
-        <p>
-          {temp}
-        </p>
-        <p>
-          {wMain}
-        </p>
-      </div>
-      <div className="showDivMore">
-        <p>
+        <p id="desc">
           {description}
         </p>
+        <button onClick={tempSwitcher} type="button">
+          {`${temp}`}
+        </button>
         <p>
-          {pressure}
+          <span>
+            Pressure
+            {'  '}
+          </span>
+          {`${pressure}hPa`}
         </p>
         <p>
-          {humidity}
+          <span>
+            Humidity
+            {'  '}
+          </span>
+          {`${humidity}%`}
         </p>
         <p>
-          {sunrise}
+          <span>
+            Sunrise
+            {'  '}
+          </span>
+          {sunrise ? `${sunrise}` : 'n/a'}
         </p>
         <p>
-          {sunset}
+          <span>
+            Sunset
+            {'  '}
+          </span>
+          {sunset ? `${sunset}` : 'n/a'}
         </p>
       </div>
     </div>
@@ -205,12 +248,11 @@ Weather.propTypes = {
 };
 ShowData.propTypes = {
   location: PropTypes.string.isRequired,
-  temp: PropTypes.number.isRequired,
-  pressure: PropTypes.number.isRequired,
-  humidity: PropTypes.number.isRequired,
+  temp: PropTypes.string.isRequired,
+  pressure: PropTypes.string.isRequired,
+  humidity: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  wMain: PropTypes.string.isRequired,
-  sunset: PropTypes.number.isRequired,
-  sunrise: PropTypes.number.isRequired,
+  sunset: PropTypes.string.isRequired,
+  sunrise: PropTypes.string.isRequired,
 };
 ReactDOM.render(<WeatherContainer />, root);
