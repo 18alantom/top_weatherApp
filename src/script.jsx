@@ -113,9 +113,9 @@ class WeatherContainer extends React.Component {
     let API_CALL;
     const { zip, country } = this.state;
     if (longitude && latitude) {
-      API_CALL = `http://api.openweathermap.org/data/2.5/weather?appid=${API_KEY}&lat=${longitude}&lon=${latitude}`;
+      API_CALL = `https://api.openweathermap.org/data/2.5/weather?appid=${API_KEY}&lat=${longitude}&lon=${latitude}`;
     } else {
-      API_CALL = `http://api.openweathermap.org/data/2.5/weather?appid=${API_KEY}&zip=${zip},${country}`;
+      API_CALL = `https://api.openweathermap.org/data/2.5/weather?appid=${API_KEY}&zip=${zip},${country}`;
     }
     fetch(API_CALL, { method: 'get', mode: 'cors' })
       .then(w => w.json())
